@@ -1,0 +1,29 @@
+# STM32CubeIDE build folders
+/Debug/
+/Release/
+
+# Eclipse/IDE files
+/.settings/
+/*.launch
+/.cproject
+/.project
+/.externalToolBuilders/
+*.bak
+
+# Object, executable, and intermediate files
+*.o
+*.elf
+*.map
+*.axf
+*.bin
+*.hex
+*.d
+
+# STM32CubeMX code generation backup
+*.ioc.backup
+
+# Temporary files
+*~
+*.swp
+*.tmp
+*.log
