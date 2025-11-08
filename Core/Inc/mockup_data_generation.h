@@ -1,0 +1,32 @@
+
+
+#ifndef INC_MQTT_CLIENT_H_
+#define INC_MQTT_CLIENT_H_
+
+#define SINE_TABLE_SIZE 400
+#define SEND_BUFFER_SIZE 3340
+#define PI 3.14159265358979323846f
+
+
+typedef enum{
+	VOLTAGE_DC=0,
+	VOLTAGE_A,
+	VOLTAGE_B,
+	VOLTAGE_C,
+	CURRENT_DC,
+	CURRENT_A,
+	CURRENT_B,
+	CURRENT_C,
+	ACCE_X,
+	ACCE_Y,
+	ACCE_Z,
+	GYRO_X,
+	GYRO_Y,
+	GYRO_Z,
+	ANOTHER_MEAS
+}mockup_sensor_t;
+
+int init_mockup_data();
+
+
+#endif /* INC_MQTT_CLIENT_H_ */
