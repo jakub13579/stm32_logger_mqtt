@@ -1,5 +1,6 @@
-../Core/Src/freertos.c:104:6:vApplicationGetIdleTaskMemory	24	static
-../Core/Src/freertos.c:118:6:MX_FREERTOS_Init	80	static
-../Core/Src/freertos.c:170:6:StartDefaultTask	16	static
-../Core/Src/freertos.c:193:6:tcpClientStart	88	static
-../Core/Src/freertos.c:272:6:mqttStartClient	184	static
+../Core/Src/freertos.c:138:6:vApplicationGetIdleTaskMemory	24	static
+../Core/Src/freertos.c:152:6:MX_FREERTOS_Init	128	static
+../Core/Src/freertos.c:214:6:StartDefaultTask	104	static
+../Core/Src/freertos.c:255:6:mqttStartClient	48	static
+../Core/Src/freertos.c:319:13:StartDataCollection	1032	static
+../Core/Src/freertos.c:378:13:StartTask04	184	static

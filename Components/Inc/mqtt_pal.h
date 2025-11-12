@@ -86,21 +86,17 @@ typedef osMutexId mqtt_pal_mutex_t;  // FreeRTOS mutex handle
 #define MQTT_PAL_TIME() (HAL_GetTick() / 1000U)  // milliseconds → seconds
 
 // Mutex
-//#define MQTT_PAL_MUTEX_LOCK(mtx)   osMutexWait((mtx), osWaitForever)
-#define MQTT_PAL_MUTEX_RELEASE(mtx) ((void)0)//osMutexRelease((mtx))
-#define MQTT_PAL_MUTEX_INIT(mutex)   ((void)0)
-#define MQTT_PAL_MUTEX_LOCK(mutex)   ((void)0)
-#define MQTT_PAL_MUTEX_UNLOCK(mutex) ((void)0)
-
-/*#define MQTT_PAL_MUTEX_INIT(mutex)   (mutex = osMutexNew(NULL))
-#define MQTT_PAL_MUTEX_LOCK(mutex)   osMutexAcquire(mutex, osWaitForever)
-#define MQTT_PAL_MUTEX_UNLOCK(mutex) osMutexRelease(mutex)
+#define MQTT_PAL_MUTEX_LOCK(mtx_ptr)    ((void)0)
+#define MQTT_PAL_MUTEX_RELEASE(mtx_ptr) ((void)0)
+#define MQTT_PAL_MUTEX_INIT(mtx_ptr)    ((void)0)
+#define MQTT_PAL_MUTEX_UNLOCK(mtx_ptr) ((void)0)
+/*#define MQTT_PAL_MUTEX_INIT(mtx_ptr)    ((void)0)
+#define MQTT_PAL_MUTEX_LOCK(mtx_ptr)   osMutexWait(*(mtx_ptr), osWaitForever)
+#define MQTT_PAL_MUTEX_RELEASE(mtx_ptr) osMutexRelease(*(mtx_ptr))
+#define MQTT_PAL_MUTEX_UNLOCK(mtx_ptr) osMutexRelease(*(mtx_ptr))
 */
-typedef struct {
-    struct netconn *conn;  // pointer to the LwIP TCP connection
-} mqttc_net_t;
 
-typedef mqttc_net_t* mqtt_pal_socket_handle;
+typedef int* mqtt_pal_socket_handle;
 
 /* UNIX-like platform support */
 #if defined(__unix__) || defined(__APPLE__) || defined(__NuttX__)

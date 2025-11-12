@@ -91,6 +91,10 @@ void HardFault_Handler(void)
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+	  HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin,0);
+	  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin,0);
+	  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin,0);
+
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }

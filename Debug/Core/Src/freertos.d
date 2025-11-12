@@ -64,14 +64,24 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/def.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/sys.h \
  ../Middlewares/Third_Party/LwIP/system/arch/sys_arch.h \
- ../Core/Inc/mqtt.h ../Core/Inc/mqtt_pal.h \
+ ../Components/Inc/mqtt.h ../Components/Inc/mqtt_pal.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/netif.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/stats.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/mem.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/memp.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_std.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/mem_priv.h
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/mem_priv.h \
+ ../Core/Inc/usart.h ../Core/Inc/main.h \
+ ../Middlewares/Third_Party/LwIP/src/include/compat/posix/sys/socket.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/sockets.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/inet.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
+ ../Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa/inet.h \
+ ../Components/Inc/mqtt_client.h ../Components/Inc/mqtt.h \
+ ../Components/Inc/mqtt_pal.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
+ ../Components/Inc/json_parser.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -138,8 +148,8 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/def.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/sys.h:
 ../Middlewares/Third_Party/LwIP/system/arch/sys_arch.h:
-../Core/Inc/mqtt.h:
-../Core/Inc/mqtt_pal.h:
+../Components/Inc/mqtt.h:
+../Components/Inc/mqtt_pal.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/netif.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/stats.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/mem.h:
@@ -147,3 +157,15 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_std.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/mem_priv.h:
+../Core/Inc/usart.h:
+../Core/Inc/main.h:
+../Middlewares/Third_Party/LwIP/src/include/compat/posix/sys/socket.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/sockets.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/inet.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
+../Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa/inet.h:
+../Components/Inc/mqtt_client.h:
+../Components/Inc/mqtt.h:
+../Components/Inc/mqtt_pal.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
+../Components/Inc/json_parser.h:

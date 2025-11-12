@@ -1,7 +1,7 @@
 
 
-#ifndef INC_MQTT_CLIENT_H_
-#define INC_MQTT_CLIENT_H_
+#ifndef INC_MOCKUP_DATA
+#define INC_MOCKUP_DATA
 
 #define SINE_TABLE_SIZE 400
 #define SEND_BUFFER_SIZE 3340

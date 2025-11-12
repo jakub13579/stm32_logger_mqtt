@@ -264,7 +264,7 @@ enum MQTTErrors mqtt_connect(struct mqtt_client *client,
     /* save the control type of the message */
     msg->control_type = MQTT_CONTROL_CONNECT;
 
-    MQTT_PAL_MUTEX_UNLOCK(&client->mutex);
+   MQTT_PAL_MUTEX_UNLOCK(&client->mutex);
     return MQTT_OK;
 }
 

@@ -1,4 +1,0 @@
-../Core/Src/mqtt_client.c:23:5:tree_setup	1
-../Core/Src/mqtt_client.c:30:5:mqtt_data_transfer	1
-../Core/Src/mqtt_client.c:35:5:get_config	1
-../Core/Src/mqtt_client.c:39:6:init_mqtt_client_thread	3

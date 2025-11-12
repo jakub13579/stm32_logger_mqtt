@@ -1,2 +1,0 @@
-../Core/Src/mqtt_pal.c:438:5:mqtt_pal_sendall	5
-../Core/Src/mqtt_pal.c:457:5:mqtt_pal_recvall	7

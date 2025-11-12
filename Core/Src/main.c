@@ -101,28 +101,15 @@ int main(void)
   MX_GPIO_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  printf("bop\r\n");
   init_mockup_data();
-  for (int i = 0; i < 8; i++) {
-  for (int j = 0; j < 3; j++) {
-	  int idx=i*400+j;
-	  printf("A[%d]=%ld, B[%d]=%ld\r\n", idx, FullPacketA[idx], idx, FullPacketB[idx]);
-  }
-  }
-  for (int i =0; i < 7; i++) {
-    for (int j = 0; j < 3; j++) {
-    	int idx= 8*400+i*20+j;
-    	printf("A[%d]=%ld, B[%d]=%ld\r\n", idx, FullPacketA[idx], idx, FullPacketB[idx]);
-    }
-  }
 
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
-  //MX_FREERTOS_Init();
+  MX_FREERTOS_Init();
 
   /* Start scheduler */
-  //osKernelStart();
+  osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 

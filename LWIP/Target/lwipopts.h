@@ -30,8 +30,7 @@
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
-#define LWIP_SO_RCVTIMEO      1
-#define LWIP_SO_SNDTIMEO      1
+
 /* USER CODE END 0 */
 
 #ifdef __cplusplus
@@ -116,7 +115,10 @@
 #define CHECKSUM_CHECK_ICMP6 0
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
-
+#define LWIP_SO_RCVTIMEO           1
+#define LWIP_SO_SNDTIMEO           1
+#define LWIP_SOCKET 1
+//#define LWIP_NETCONN_SEM_PER_THREAD 1
 /* USER CODE END 1 */
 
 #ifdef __cplusplus

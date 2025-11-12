@@ -430,57 +430,28 @@ ssize_t mqtt_pal_recvall(mqtt_pal_socket_handle fd, void* buf, size_t bufsz, int
 }
 
 #else
-
-
-#include "lwip/api.h"
-
+#include <sys/socket.h>
+#include <errno.h>
+extern int errno;
 
 int mqtt_pal_sendall(mqtt_pal_socket_handle sock, const void *buf, size_t len, int flags)
 {
-	    if (!sock || !sock->conn) return -1;
-
-	    err_t err = netconn_write(sock->conn, buf, len, NETCONN_COPY);
-
-	    if (err == ERR_OK) {
-	        return (int)len;            // ✅ message sent, can be marked complete
-	    }
-	    else if (err == ERR_MEM) {
-	        // TCP buffer full, try again later — but *don’t* mark as complete
-	        return 0;                   // ✅ retry later, not a hard error
-	    }
-	    else {
-	        // e.g., connection lost
-	        return -1;                  // ❌ disconnect/reconnect needed
-	    }
+    ssize_t sent = send(*sock, buf, len, flags);
+    if (sent < 0) return -1;   // error
+    return (int)sent;          // number of bytes sent
 }
 
 int mqtt_pal_recvall(mqtt_pal_socket_handle sock, void *buf, size_t len, int flags)
 {
-    if (!sock || !sock->conn) return -1;
-
-    size_t copied = 0;
-    while (copied < len) {
-        struct netbuf *buf_in;
-        netconn_set_recvtimeout(sock->conn, 50);  // GPTs suggestion
-
-        err_t err = netconn_recv(sock->conn, &buf_in);
-        if (err == ERR_TIMEOUT)return 0;
-        else if(err !=ERR_OK)return -1;
-
-        void *data;
-        u16_t data_len;
-        netbuf_data(buf_in, &data, &data_len);
-
-        // copy only what fits
-        if (data_len > len - copied) data_len = len - copied;
-        memcpy((uint8_t*)buf + copied, data, data_len);
-        copied += data_len;
-
-        netbuf_delete(buf_in);
+    ssize_t recvd = recv(*sock, buf, len, flags);
+    if (recvd < 0){
+    	if(errno==11)return 0;
+    	return -1;  // error
     }
-
-    return (int)copied;  // return number of bytes received
+    if (recvd == 0) return 0;  // connection closed
+    return (int)recvd;
 }
+
 #endif
 
 #endif /* defined(MQTT_USE_CUSTOM_SOCKET_HANDLE) */

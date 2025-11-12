@@ -7,6 +7,7 @@
 #include "mockup_data_generation.h"
 #include <stdint.h>
 #include "math.h"
+#include <stdio.h>
 
 static uint32_t sine_table[SINE_TABLE_SIZE];
 int32_t FullPacketA[SEND_BUFFER_SIZE];
@@ -75,6 +76,21 @@ int init_mockup_data(){
 	generate_test_data();
 	populate_send_buffer(FullPacketA,0);
 	populate_send_buffer(FullPacketB,50);
+	return 0;
+}
+int print_data(){
+	for (int i = 0; i < 8; i++) {
+	for (int j = 0; j < 3; j++) {
+		  int idx=i*400+j;
+		  printf("A[%d]=%ld, B[%d]=%ld\r\n", idx, FullPacketA[idx], idx, FullPacketB[idx]);
+	}
+	}
+	for (int i =0; i < 7; i++) {
+	  for (int j = 0; j < 3; j++) {
+		int idx= 8*400+i*20+j;
+		printf("A[%d]=%ld, B[%d]=%ld\r\n", idx, FullPacketA[idx], idx, FullPacketB[idx]);
+	  }
+	}
 	return 0;
 }
 

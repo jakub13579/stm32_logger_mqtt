@@ -1,4 +1,0 @@
-../Core/Src/mockup_data_generation.c:15:6:generate_test_data	2
-../Core/Src/mockup_data_generation.c:27:9:mockup_data_generator	16
-../Core/Src/mockup_data_generation.c:64:6:populate_send_buffer	4
-../Core/Src/mockup_data_generation.c:74:5:init_mockup_data	1
