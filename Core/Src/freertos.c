@@ -42,6 +42,7 @@
 #include "json_parser.h"
 #include "fullpacket.h"
 
+
 #define MQTT_SEND_BUF_SIZE 20480
 #define MQTT_RECV_BUF_SIZE 512
 #define HTTP_SEND_BUF_SIZE 1024
@@ -113,6 +114,7 @@ char mqtt_topic[64]="device/raw";
 
 err_t error;
 _Bool start_process=0;
+_Bool success;
 int msg_cnt = 0;
 char error_msg[128];
 
@@ -146,8 +148,6 @@ const char fault_name[]="Electrical Fault";
 const char condition_name[]="Speed Condition";
 
 _Bool create_session_success=0;
-
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -170,7 +170,7 @@ _Bool create_session_success=0;
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-uint32_t defaultTaskBuffer[ 256 ];
+uint32_t defaultTaskBuffer[ 2048 ];
 osStaticThreadDef_t defaultTaskControlBlock;
 osThreadId mqttClientTaskHandle;
 uint32_t mqttClientTaskBuffer[ 2048 ];
@@ -198,28 +198,6 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
 
-/* Hook prototypes */
-void configureTimerForRunTimeStats(void);
-unsigned long getRunTimeCounterValue(void);
-
-/* USER CODE BEGIN 1 */
-/* Functions needed when configGENERATE_RUN_TIME_STATS is on */
-__weak void configureTimerForRunTimeStats(void)
-{
-	 // Enable DWT cycle counter
-	DWT_LAR_REG = 0xC5ACCE55;
-	DCB_DEMCR_REG |= TRCENA_BIT;
-	DWT_CYCCNT_REG = 0;
-	DWT_CTRL_REG |= CYCCNTENA_BIT;
-}
-
-__weak unsigned long getRunTimeCounterValue(void)
-{
-
-    return ( DWT_CYCCNT_REG >> 10 ); // Return current cycle count
-}
-/* USER CODE END 1 */
-
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
 static StackType_t xIdleStack[configMINIMAL_STACK_SIZE];
@@ -240,9 +218,7 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-	generate_dataStruct(&PacketA, 0);
-	generate_dataStruct(&PacketB, 500);
-	configureTimerForRunTimeStats();
+
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -271,7 +247,7 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadStaticDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 256, defaultTaskBuffer, &defaultTaskControlBlock);
+  osThreadStaticDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 2048, defaultTaskBuffer, &defaultTaskControlBlock);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of mqttClientTask */
@@ -283,8 +259,8 @@ void MX_FREERTOS_Init(void) {
   dataCollectionHandle = osThreadCreate(osThread(dataCollection), NULL);
 
   /* definition and creation of RTOS_UART_TASK */
-  osThreadStaticDef(RTOS_UART_TASK, StartTask04, osPriorityIdle, 0, 512, RTOS_UART_TASKBuffer, &RTOS_UART_TASKControlBlock);
-  RTOS_UART_TASKHandle = osThreadCreate(osThread(RTOS_UART_TASK), NULL);
+  //osThreadStaticDef(RTOS_UART_TASK, StartTask04, osPriorityIdle, 0, 512, RTOS_UART_TASKBuffer, &RTOS_UART_TASKControlBlock);
+  //RTOS_UART_TASKHandle = osThreadCreate(osThread(RTOS_UART_TASK), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -308,28 +284,34 @@ void StartDefaultTask(void const * argument)
 
   osSemaphoreWait(httpSetupReadySemHandle, osWaitForever);
   /* Infinite loop */
+
   for(;;)
   {
+
+	//osSemaphoreWait(httpSetupReadySemHandle, osWaitForever);
 	uint32_t time_start=HAL_GetTick();
 	uint32_t time_ms=0;
 	msg_cnt=0;
 	_Bool packet_select=0;
-	start_process=0;
 	int msg_len=0;
 	//if(HAL_GPIO_ReadPin(USER_Btn_GPIO_Port, USER_Btn_Pin)==GPIO_PIN_SET)start_process=1;
 
 
-	while(client.error==MQTT_OK && start_process && msg_cnt<=100){
-		time_ms=HAL_GetTick()-time_start;
-		msg_cnt++;
+	while(client.error==MQTT_OK && start_process){
+			time_ms=HAL_GetTick()-time_start;
+			msg_cnt++;
 
-		if(packet_select)msg_len=create_base64_packet(mqtt_sendbuf, sizeof(mqtt_sendbuf),dataseries_id,version_token,time_ms,&PacketA);
-		else msg_len=create_base64_packet(mqtt_sendbuf, sizeof(mqtt_sendbuf),dataseries_id,version_token,time_ms,&PacketB);
-		mqtt_publish(&client, mqtt_topic, mqtt_sendbuf, msg_len, MQTT_PUBLISH_QOS_0);
-		memset(mqtt_sendbuf,0,sizeof(mqtt_sendbuf));
-		osDelay(20);
-	}
-
+			if(packet_select)msg_len=create_base64_packet(mqtt_sendbuf, sizeof(mqtt_sendbuf),dataseries_id,version_token,time_ms,&PacketA);
+			else msg_len=create_base64_packet(mqtt_sendbuf, sizeof(mqtt_sendbuf),dataseries_id,version_token,time_ms,&PacketB);
+			mqtt_publish(&client, mqtt_topic, mqtt_sendbuf, msg_len, MQTT_PUBLISH_QOS_0);
+			//memset(mqtt_sendbuf,0,sizeof(mqtt_sendbuf));
+			osDelay(2000);
+			if(msg_cnt>100){
+				start_process=0;
+				break;
+			}
+		}
+	//start_process=0;
     osDelay(100);
   }
   /* USER CODE END StartDefaultTask */
@@ -364,13 +346,12 @@ __weak void mqttStartClient(void const * argument)
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin,1);
 		osDelay(100);
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin,0);
-		osDelay(400);
 		mqtt_state=MQTT_STATE_NETCONN_CONNECT;
 
 
 		// Create a new connection;
 		int sock_fd;
-		//if(create_socket_connection(&sock_fd, "192.168.1.10", broker_port, 3)!=0)continue;
+		if(create_socket_connection(&sock_fd, "192.168.1.10", broker_port, 3)!=0)continue;
 
 		/* Initialize MQTT */
 		mqtt_state=MQTT_STATE_MQTT_INIT;
@@ -384,10 +365,11 @@ __weak void mqttStartClient(void const * argument)
 			{
 				mqtt_sync(&client);
 				mqtt_state=MQTT_STATE_MQTT_PUBLISH;
-				osDelay(10);
+				osDelay(100);
 			}
 		mqtt_disconnect(&client);
 		close(sock_fd);
+		osDelay(2000);
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin,0);
 	}
 
@@ -418,10 +400,6 @@ __weak void StartDataCollection(void const * argument)
 	const char username[]="admin";
 	const char password[]="admin123";
 
-
-
-	//parameters
-	_Bool success;
 
 	//while(1){
 	osSemaphoreWait(lwipReadySemHandle, osWaitForever);
@@ -559,22 +537,75 @@ __weak void StartDataCollection(void const * argument)
 __weak void StartTask04(void const * argument)
 {
   /* USER CODE BEGIN StartTask04 */
+  /* Infinite loop */
+	 uint8_t buffIn[64];
+	    const uint8_t errorMsg[]   = "ERROR: command not recognized\r\n";
+	    const uint8_t successMsg[] = "SUCCESS: process will start\r\n";
 
-	  /* 1. Buffer for the raw data */
-	  char buffer[512];
+	    size_t idx = 0;
+	    HAL_StatusTypeDef status;
+	    const uint32_t perByteTimeout = 200;    // ms to wait for each byte
+	    const uint32_t overallTimeout = 2000;   // ms max to wait for full command
 
-	  /* Infinite loop */
-	  for (;;)
-	  {
-	      /* 2. Generate the stats */
-	     // vTaskGetRunTimeStats(buffer);
+	    for (;;)
+	    {
+	        idx = 0;
+	        uint32_t t_start = HAL_GetTick();
+	        _Bool gotCommand = 0;
 
-	      /* 3. OPTIONAL: Add a header for readability */
+	        while ((HAL_GetTick() - t_start) < overallTimeout && idx < (sizeof(buffIn) - 1))
+	        {
+	            uint8_t byte;
+	            status = HAL_UART_Receive(&huart3, &byte, 1, perByteTimeout);
 
-	      /* 4. Transmit ONLY the actual string length, not the full buffer size */
+	            if (status == HAL_OK)
+	            {
+	                // Ignore CR (carriage return)
+	                if (byte == '\r') {
+	                    continue;
+	                }
 
-	      osDelay(5000); // 1 second is often too fast to read; 5s is better
-	  }
+	                // If newline -> end of command
+	                if (byte == '\n') {
+	                    gotCommand = 1;
+	                    break;
+	                }
+	                // store and continue
+	                buffIn[idx++] = byte;
+	                // reset overall timeout so slow typing within a command is allowed
+	                t_start = HAL_GetTick();
+	            }
+	            else
+	            {
+	                // no byte received within perByteTimeout, loop and check overall timeout
+	            }
+	        }
+
+	        // If we have at least one character or gotCommand via newline, process buffer
+	        if (idx > 0 || gotCommand)
+	        {
+	            buffIn[idx] = '\0'; // null-terminate
+
+	            // Optional: trim trailing whitespace
+	            while (idx > 0 && (buffIn[idx-1] == ' ' || buffIn[idx-1] == '\t')) {
+	                idx--;
+	                buffIn[idx] = '\0';
+	            }
+
+	            if (strcmp((char*)buffIn, "start") == 0)
+	            {
+	                HAL_UART_Transmit(&huart3, (uint8_t*)successMsg, strlen((char*)successMsg), HAL_MAX_DELAY);
+	                HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	            }
+	            else
+	            {
+	                HAL_UART_Transmit(&huart3, (uint8_t*)errorMsg, strlen((char*)errorMsg), HAL_MAX_DELAY);
+	                HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+	            }
+	        }
+
+	  osDelay(10);
+  }
   /* USER CODE END StartTask04 */
 }
 

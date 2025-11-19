@@ -49,34 +49,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := MQTT_prototype
+BUILD_ARTIFACT_NAME := MQTT_prototypev2
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-MQTT_prototype.elf \
+MQTT_prototypev2.elf \
 
 MAP_FILES += \
-MQTT_prototype.map \
+MQTT_prototypev2.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-MQTT_prototype.list \
+MQTT_prototypev2.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: MQTT_prototype.elf secondary-outputs
+main-build: MQTT_prototypev2.elf secondary-outputs
 
 # Tool invocations
-MQTT_prototype.elf MQTT_prototype.map: $(OBJS) $(USER_OBJS) C:\Users\jakub\STM32CubeIDE\workspace_1.16.1\MQTT_prototype\STM32F746ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MQTT_prototype.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\jakub\STM32CubeIDE\workspace_1.16.1\MQTT_prototype\STM32F746ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MQTT_prototype.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MQTT_prototypev2.elf MQTT_prototypev2.map: $(OBJS) $(USER_OBJS) C:\Users\jakub\Downloads\stm32_logger_mqtt-main\stm32_logger_mqtt-main\STM32F746ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MQTT_prototypev2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\jakub\Downloads\stm32_logger_mqtt-main\stm32_logger_mqtt-main\STM32F746ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MQTT_prototypev2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -85,14 +85,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-MQTT_prototype.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "MQTT_prototype.list"
+MQTT_prototypev2.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "MQTT_prototypev2.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) MQTT_prototype.elf MQTT_prototype.list MQTT_prototype.map default.size.stdout
+	-$(RM) MQTT_prototypev2.elf MQTT_prototypev2.list MQTT_prototypev2.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

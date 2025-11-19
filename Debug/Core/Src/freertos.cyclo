@@ -1,8 +1,6 @@
-../Core/Src/freertos.c:207:13:configureTimerForRunTimeStats	1
-../Core/Src/freertos.c:216:22:getRunTimeCounterValue	1
-../Core/Src/freertos.c:227:6:vApplicationGetIdleTaskMemory	1
-../Core/Src/freertos.c:241:6:MX_FREERTOS_Init	1
-../Core/Src/freertos.c:302:6:StartDefaultTask	5
-../Core/Src/freertos.c:345:13:mqttStartClient	3
-../Core/Src/freertos.c:410:13:StartDataCollection	9
-../Core/Src/freertos.c:559:13:StartTask04	1
+../Core/Src/freertos.c:205:6:vApplicationGetIdleTaskMemory	1
+../Core/Src/freertos.c:219:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:278:6:StartDefaultTask	5
+../Core/Src/freertos.c:327:13:mqttStartClient	4
+../Core/Src/freertos.c:392:13:StartDataCollection	9
+../Core/Src/freertos.c:537:13:StartTask04	12

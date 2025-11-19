@@ -27,8 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
 #include "mqtt_client.h"
-//#include "mockup_data_generation.h"
-#include "fullpacket.h"
+#include "mockup_data_generation.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,18 +48,21 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+int _write(int file, char *ptr, int len)
+	{
+	    HAL_UART_Transmit(&huart3, (uint8_t*)ptr, len, HAL_MAX_DELAY);
+	    return len;
+	}
 
+extern int32_t FullPacketA[3340];
+extern int32_t FullPacketB[3340];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-int _write(int file, char *ptr, int len)
-	{
-	    HAL_UART_Transmit(&huart3, (uint8_t*)ptr, len, HAL_MAX_DELAY);
-	    return len;
-	}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -76,7 +78,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -99,26 +100,8 @@ int main(void)
   MX_GPIO_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+  init_mockup_data();
 
- /* clock_t start = HAL_GetTick();
-  int len=create_base64_packet(json_buffer, sizeof(json_buffer),ds_id,bt,ts, &PacketA);
-  clock_t end = HAL_GetTick();
-
-  int time=start-end;
-  printf("STRUCT \r\n");
-  printf("time of buffer assembly=%d ms \r\n",time);
-  printf("buffer lenght=%d\r\n",len);
-*/
-  /*
-  generate_dataArray(DataArray);
-   start = HAL_GetTick();
-   len=create_base64_packet_arr(json_buffer, sizeof(json_buffer),ds_id,bt,ts, DataArray);
-   end = HAL_GetTick();
-
-  time=start-end;
-  printf("ARRAY \r\n");
-   printf("time of buffer assembly=%d ms \r\n",time);
-   printf("buffer lenght=%d\r\n",len);*/
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */

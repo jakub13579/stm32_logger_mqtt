@@ -89,7 +89,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h \
  ../Components/Inc/mqtt_pal.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
- ../Components/Inc/fullpacket.h
+ ../Components/Inc/mockup_data_generation.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -184,4 +184,4 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h:
 ../Components/Inc/mqtt_pal.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
-../Components/Inc/fullpacket.h:
+../Components/Inc/mockup_data_generation.h:
