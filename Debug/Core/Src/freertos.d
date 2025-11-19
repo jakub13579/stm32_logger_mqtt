@@ -81,7 +81,8 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Components/Inc/mqtt_client.h ../Components/Inc/mqtt.h \
  ../Components/Inc/mqtt_pal.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
- ../Components/Inc/json_parser.h
+ ../Components/Inc/json_parser.h ../Components/Inc/mqtt_client.h \
+ ../Components/Inc/fullpacket.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -169,3 +170,5 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Components/Inc/mqtt_pal.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
 ../Components/Inc/json_parser.h:
+../Components/Inc/mqtt_client.h:
+../Components/Inc/fullpacket.h:

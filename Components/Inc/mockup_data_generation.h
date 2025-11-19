@@ -7,6 +7,32 @@
 #define SEND_BUFFER_SIZE 3340
 #define PI 3.14159265358979323846f
 
+#define IMU_PACKET_N 20
+#define ELEC_PACKET_N 400
+
+typedef struct{
+	int data_series_id;
+	char bench_token[128];
+	char timestamp[64];
+	int acc_x[IMU_PACKET_N];
+	int acc_y[IMU_PACKET_N];
+	int acc_z[IMU_PACKET_N];
+	int gyr_x[IMU_PACKET_N];
+	int gyr_y[IMU_PACKET_N];
+	int gyr_z[IMU_PACKET_N];
+	int curr_u[ELEC_PACKET_N];
+	int curr_v[ELEC_PACKET_N];
+	int curr_w[ELEC_PACKET_N];
+	int curr_dc[ELEC_PACKET_N];
+	int volt_u[ELEC_PACKET_N];
+	int volt_v[ELEC_PACKET_N];
+	int volt_w[ELEC_PACKET_N];
+	int volt_dc[ELEC_PACKET_N];
+	int another_meas[IMU_PACKET_N];
+}FullPacket_t;
+
+
+int FullPacket_json_encode();
 
 typedef enum{
 	VOLTAGE_DC=0,

@@ -23,7 +23,7 @@
 //#define MQTT_RECV_BUF_SIZE 512
 
 
-int create_socket_connection(int sock,const char* ip,unsigned short port, unsigned int timeout);
+int create_socket_connection(int* sock,const char* ip,unsigned short port, unsigned int timeout);
 void init_mqtt_client_thread();
 int mqtt_data_transfer(struct mqtt_client* client);
 
