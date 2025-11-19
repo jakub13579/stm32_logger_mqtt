@@ -54,7 +54,7 @@
 /*----- Default Value for MEM_SIZE: 1600 ---*/
 #define MEM_SIZE 1024*8
 /*----- Default Value for F7/H7 devices: 0x30044000 -----*/
-#define LWIP_RAM_HEAP_POINTER 0x20017f58
+#define LWIP_RAM_HEAP_POINTER 0x20027f58
 /*----- Value in opt.h for LWIP_ETHERNET: LWIP_ARP || PPPOE_SUPPORT -*/
 #define LWIP_ETHERNET 1
 /*----- Value in opt.h for LWIP_DNS_SECURE: (LWIP_DNS_SECURE_RAND_XID | LWIP_DNS_SECURE_NO_MULTIPLE_OUTSTANDING | LWIP_DNS_SECURE_RAND_SRC_PORT) -*/

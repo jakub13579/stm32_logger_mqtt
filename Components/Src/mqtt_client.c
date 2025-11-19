@@ -45,11 +45,11 @@ void init_mqtt_client_thread(){
 
 }
 
-int create_socket_connection(int sock,const char* ip, unsigned short port, unsigned int timeout){
+int create_socket_connection(int* sock,const char* ip, unsigned short port, unsigned int timeout){
 
 	struct sockaddr_in server_addr;
-		sock = socket(AF_INET, SOCK_STREAM, 0);
-		if (sock < 0) {
+		*sock = socket(AF_INET, SOCK_STREAM, 0);
+		if (*sock < 0) {
 		    return -1; // Failed to create a socket
 		}
 
@@ -63,46 +63,46 @@ int create_socket_connection(int sock,const char* ip, unsigned short port, unsig
 		struct timeval tv;
 		tv.tv_sec = 0;
 		tv.tv_usec = 2000;
-		setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-		int flags = fcntl(sock, F_GETFL, 0);
-		fcntl(sock, F_SETFL, flags | O_NONBLOCK);
+		setsockopt(*sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+		int flags = fcntl(*sock, F_GETFL, 0);
+		fcntl(*sock, F_SETFL, flags | O_NONBLOCK);
 
 		// Connect (non-blocking)
-		connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
+		int err=connect(*sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
 		if (errno == EINPROGRESS) {
 		        // connection in progress
 		        fd_set wfds;
 		        FD_ZERO(&wfds);
-		        FD_SET(sock, &wfds);
+		        FD_SET(*sock, &wfds);
 		        struct timeval timeout = {3, 0};  // 3s timeout
 
-		        int ret = select(sock + 1, NULL, &wfds, NULL, &timeout);
-		        if (ret > 0 && FD_ISSET(sock, &wfds)) {
+		        int ret = select(*sock + 1, NULL, &wfds, NULL, &timeout);
+		        if (ret > 0 && FD_ISSET(*sock, &wfds)) {
 		            // check if connection succeeded
 		            int so_error = 0;
 		            socklen_t len = sizeof(so_error);
-		            getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
+		            getsockopt(*sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
 		            if (so_error == 0) {
 		            	return 0;
 		            } else {
 		                // connection failed
-		                close(sock);
+		                close(*sock);
 		                return -2;
 		            }
 		        } else {
 		            // timeout or select error
-		            close(sock);
+		            close(*sock);
 		            return -3;
 		        }
 		}
-	close(sock);
+	close(*sock);
 	return -1;
 }
 //HTTP Part
 
 #include "json_parser.h"
 
-void http_init(HttpClient_t* client,int sock,char* tx_buff,size_t tx_size, char* rx_buff, size_t rx_size,char* resp_jason, size_t resp_jason_size){
+void http_init(HttpClient_t* client,int sock, char* tx_buff,size_t tx_size,char* rx_buff, size_t rx_size,char* resp_jason, size_t resp_jason_size){
 	client->socket = sock;
 	client->send_buffer = tx_buff;
 	client->send_buffer_size = tx_size;
@@ -125,6 +125,7 @@ int http_post_request(HttpClient_t* client,int header_len,int content_len){
 					if(http_continue(client->recv_buffer)){
 						memset(client->recv_buffer,0,client->recv_buffer_size);
 						int p=send(client->socket, client->send_buffer+header_len,content_len , 0);
+						total_bytes_received=0;
 						if(p==content_len)cont=1;
 						else return -2;
 					}

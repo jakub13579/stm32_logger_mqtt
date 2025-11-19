@@ -4,7 +4,14 @@
 #include <stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include"mqtt_client.h"
 typedef char* ipv4_addr_t;
+
+
+typedef int (*HttpRequestFunc)(char* out, size_t out_size, int flag);
+typedef int (*HttpParseFunc)(HttpClient_t client);
+extern HttpRequestFunc steps[];
+extern HttpParseFunc parse_steps[];
 
 
 int parse_json_int (char* json, const char* key, int* out_value);

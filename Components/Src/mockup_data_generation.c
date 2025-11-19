@@ -93,4 +93,15 @@ int print_data(){
 	}
 	return 0;
 }
+/*
+const char mqtt_publish_message[]="{\"iddata_series\":\"%d\","
+								  "\"bench_token\":\"%s\","
+								  "\"timestamp\":\"%s\","//TODO timestamp formatting RTC module??
+								  "\"data\":"
+								  "{\"acc_x\":%d,\"acc_y\":%d,\"acc_z\":%d,"
+								  "\"gyro_x\":%d,\"gyro_y\":%d,\"gyro_z\":%d,"
+								  "\"curr_u\":%d,\"curr_v\":%d,\"curr_w\":%d,\"curr_dc\":%d,"
+								  "\"volt_u\":%d,\"volt_v\":%d,\"volt_w\":%d,\"curr_dc\":%d,"
+								  "\"last_meas\":%d}}";
 
+*/

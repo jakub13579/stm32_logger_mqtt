@@ -1,3 +1,4 @@
+"./Components/Src/fullpacket.o"
 "./Components/Src/json_parser.o"
 "./Components/Src/mockup_data_generation.o"
 "./Components/Src/mqtt.o"
